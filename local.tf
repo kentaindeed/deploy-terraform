@@ -58,4 +58,25 @@ locals {
             }
         ]
     }
+    # SSH 22 security group 0.0.0.0/0
+    ssh_22_security_group = {
+        name = "ssh-22-security-group"
+        description = "SSH 22 security group"
+        ingress = [
+            {
+                from_port = 22
+                to_port = 22
+                protocol = "tcp"
+                cidr_blocks = ["0.0.0.0/0"]
+            }
+        ]
+        egress = [
+            {
+                from_port = 0
+                to_port = 0
+                protocol = "-1"
+                cidr_blocks = ["0.0.0.0/0"]
+            }
+        ]
+    }
 }

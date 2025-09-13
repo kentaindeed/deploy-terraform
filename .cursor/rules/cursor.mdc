@@ -1,0 +1,10 @@
+---
+description: terraform 用のcursor ルールです。
+globs:
+alwaysApply: true
+---
+
+# rules 
+- 変更する前に絶対に聞いてください
+- 先に提案してください
+- 提案した内容を全部書いてください
