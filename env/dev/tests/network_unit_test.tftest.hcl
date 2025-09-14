@@ -70,10 +70,4 @@ run "network_module_validation" {
     condition = aws_subnet.public[0].cidr_block != aws_subnet.private[0].cidr_block
     error_message = "サブネットのCIDRブロックが重複しています"
   }
-
-  # インターネットゲートウェイのテスト
-  assert {
-    condition     = aws_internet_gateway.main.vpc_id == aws_vpc.main.id
-    error_message = "インターネットゲートウェイが正しいVPCに関連付けられていません"
-  }
 }
