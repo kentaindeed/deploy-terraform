@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   test:
@@ -22,7 +23,7 @@ jobs:
           terraform_version: 1.11.4 # 必要に応じてバージョンを指定
 
       - name: Terraform Init
-        run: terraform init
+        run: cd env/dev/ && terraform init
 
       - name: Terraform Test
-        run: terraform test
+        run: cd env/dev/ && terraform test
