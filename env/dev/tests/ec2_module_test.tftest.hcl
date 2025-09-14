@@ -11,7 +11,7 @@ variables {
   ami            = "ami-047126e50991d067b"
   instance_type  = "t2.micro"
   subnet_ids     = ["subnet-12345678", "subnet-87654321"]
-  instance_count = 2
+  instance_count = 1
 }
 
 # EC2モジュールを実行
