@@ -26,7 +26,9 @@ jobs:
         run: cd env/dev/ && terraform init
 
       - name: Terraform Test
-        run: cd env/dev/ && terraform test
+        run: |
+          cd env/dev/ && terraform test tests/ec2_module_test.tftest.hcl
+          cd env/dev/ && terraform test tests/network_unit_test.tftest.hcl
         env:
           # テスト用の環境変数
           AWS_ACCESS_KEY_ID:  "test"
