@@ -24,8 +24,8 @@ jobs:
           cd env/dev/ && terraform test -filter="tests/ec2_module_test.tftest.hcl"
           terraform test -filter="tests/network_unit_test.tftest.hcl"
           terraform apply -auto-approve
-        env:
-          # テスト用の環境変数
-          AWS_ACCESS_KEY_ID:  "${{secrets.AWS_ACCESS_KEY_ID}}"
-          AWS_SECRET_ACCESS_KEY: "${{secrets.AWS_SECRET_ACCESS_KEY}}"
+        with:
+          AWS_ACCESS_KEY_ID:  "${{ secrets.AWS_ACCESS_KEY_ID }}"
+          AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           AWS_DEFAULT_REGION: "ap-southeast-1"
+
