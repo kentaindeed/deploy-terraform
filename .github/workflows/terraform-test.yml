@@ -23,7 +23,7 @@ jobs:
         run: |
           cd env/dev/ && terraform test -filter="tests/ec2_module_test.tftest.hcl"
           terraform test -filter="tests/network_unit_test.tftest.hcl"
-        with:
+        env:
           AWS_ACCESS_KEY_ID:  "test"
           AWS_SECRET_ACCESS_KEY: "test"
           AWS_DEFAULT_REGION: "ap-southeast-1"
@@ -31,7 +31,7 @@ jobs:
       - name: terraform apply
         run: |
           cd env/dev/ && terraform apply -auto-approve
-        with:
+        env:
           AWS_ACCESS_KEY_ID:  "${{ secrets.AWS_ACCESS_KEY_ID }}"
           AWS_SECRET_ACCESS_KEY: "${{ secrets.AWS_SECRET_ACCESS_KEY }}"
           AWS_DEFAULT_REGION: "ap-southeast-1"
