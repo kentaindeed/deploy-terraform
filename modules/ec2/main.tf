@@ -19,7 +19,7 @@ resource "aws_instance" "ec2" {
     ami           = var.ami
     instance_type = var.instance_type
     subnet_id     = var.subnet_ids[count.index % length(var.subnet_ids)]
-    
+    vpc_security_group_ids = var.security_group_ids
     tags = merge(local.common_tags, {
         Name = "${local.common_tags.Project}-ec2-${count.index + 1}"
     })

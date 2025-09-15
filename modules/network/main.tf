@@ -10,6 +10,7 @@ locals {
         CreatedBy = "terraform"
         CreatedAt = "2025-01-01"
     }
+
 }
 
 
@@ -90,4 +91,69 @@ resource "aws_route_table_association" "private" {
     count = 2
     subnet_id = aws_subnet.private[count.index].id
     route_table_id = aws_route_table.private.id
+}
+
+# security group 定義
+resource "aws_security_group" "main" {
+  for_each = var.security_group_configs
+  
+  name        = each.value.name
+  description = each.value.description
+  vpc_id      = aws_vpc.main.id
+
+  tags = merge(local.common_tags, {
+    Name = each.value.name
+  })
+}
+
+# インバウンドルール（別リソース）
+resource "aws_security_group_rule" "ingress" {
+  for_each = {
+    for rule in flatten([
+      for sg_key, sg_config in var.security_group_configs : [
+        for idx, ingress_rule in sg_config.ingress : {
+          key           = "${sg_key}-ingress-${idx}"
+          sg_key        = sg_key
+          type          = "ingress"
+          from_port     = ingress_rule.from_port
+          to_port       = ingress_rule.to_port
+          protocol      = ingress_rule.protocol
+          cidr_blocks   = ingress_rule.cidr_blocks
+        }
+      ]
+    ]) : rule.key => rule
+  }
+
+  type              = each.value.type
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+  protocol          = each.value.protocol
+  cidr_blocks       = each.value.cidr_blocks
+  security_group_id = aws_security_group.main[each.value.sg_key].id
+}
+
+# アウトバウンドルール（別リソース）
+resource "aws_security_group_rule" "egress" {
+  for_each = {
+    for rule in flatten([
+      for sg_key, sg_config in var.security_group_configs : [
+        for idx, egress_rule in sg_config.egress : {
+          key           = "${sg_key}-egress-${idx}"
+          sg_key        = sg_key
+          type          = "egress"
+          from_port     = egress_rule.from_port
+          to_port       = egress_rule.to_port
+          protocol      = egress_rule.protocol
+          cidr_blocks   = egress_rule.cidr_blocks
+        }
+      ]
+    ]) : rule.key => rule
+  }
+
+  type              = each.value.type
+  from_port         = each.value.from_port
+  to_port           = each.value.to_port
+  protocol          = each.value.protocol
+  cidr_blocks       = each.value.cidr_blocks
+  security_group_id = aws_security_group.main[each.value.sg_key].id
 }

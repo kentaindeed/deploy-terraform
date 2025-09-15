@@ -19,3 +19,9 @@ variable "instance_count" {
   type        = number
   default     = 1
 }
+
+variable "security_group_ids" {
+  description = "List of security group IDs to attach to EC2 instances"
+  type        = list(string)
+  default     = []
+}
