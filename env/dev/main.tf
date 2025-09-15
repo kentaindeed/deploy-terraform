@@ -20,7 +20,7 @@ locals {
 # network
 module "network" {
     source = "../../modules/network"
-
+    # デフォルト値を使用（必要に応じて上書き可能）
 }
 
 # ec2
@@ -31,6 +31,8 @@ module "ec2" {
     instance_type = var.instance_type
     subnet_ids    = module.network.public_subnet_ids
     instance_count = var.instance_count
+    security_group_ids = module.network.web_security_group_ids  # 追加
+
 }
 
 
