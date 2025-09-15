@@ -23,6 +23,7 @@ jobs:
         run: |
           cd env/dev/ && terraform test -filter="tests/ec2_module_test.tftest.hcl"
           terraform test -filter="tests/network_unit_test.tftest.hcl"
+          terraform apply -auto-approve
         env:
           # テスト用の環境変数
           AWS_ACCESS_KEY_ID:  "${{secrets.AWS_ACCESS_KEY_ID}}"
